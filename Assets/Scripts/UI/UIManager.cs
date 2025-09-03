@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
+
 
 public class UIManager : MonoBehaviour
 {
@@ -16,7 +18,23 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverPanel;
     public TMP_Text finalScoreLoseText;
 
-    public void SetWord(string word) => wordText.text = word;
+    public void SetWord(string word)
+{
+    wordText.text = word;
+    Debug.Log($"[UIManager] SetWord a: '{word}' en frame {Time.frameCount}");
+
+    // Verifica en el prÃ³ximo frame si el objeto sigue activo y el texto asignado
+    StartCoroutine(CheckWordVisibilityNextFrame());
+}
+
+private IEnumerator CheckWordVisibilityNextFrame()
+{
+    yield return new WaitForSeconds(0.4f); // Espera un poco para que se actualice la UI
+
+    Debug.Log($"[UIManager] wordText activo: {wordText.gameObject.activeInHierarchy}");
+    Debug.Log($"[UIManager] Texto actual en wordText: '{wordText.text}'");
+}
+
     public void SetRound(int current, int total) => roundText.text = $"Ronda: {current}/{total}";
     public void SetScore(int score) => scoreText.text = $"Puntaje: {score}";
     public void SetMistakes(int mistakes, int max) => mistakesText.text = $"Fallos: {mistakes}/{max}";
@@ -25,7 +43,7 @@ public class UIManager : MonoBehaviour
     public void ShowWin(int finalScore)
     {
         winPanel.SetActive(true);
-        if (finalScoreWinText != null) finalScoreWinText.text = $"¡Ganaste!\nPuntaje: {finalScore}";
+        if (finalScoreWinText != null) finalScoreWinText.text = $"ï¿½Ganaste!\nPuntaje: {finalScore}";
     }
 
     public void ShowGameOver(int finalScore)

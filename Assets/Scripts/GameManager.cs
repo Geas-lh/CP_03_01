@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
         // Elige objetivo no repetido
         currentTarget = GetRandomTargetAvoidingUsed();
         usedTargets.Add(currentTarget);
-        ui.SetWord(currentTarget.englishWord);
+        StartCoroutine(DelayedSetWord(currentTarget.englishWord));
 
         // Construye el set de ítems: 1 correcto + (itemsPerRound-1) distractores
         var roundItems = BuildRoundItems(currentTarget, itemsPerRound);
@@ -256,4 +256,10 @@ public class GameManager : MonoBehaviour
         float y = Random.Range(-size.y * 0.45f, size.y * 0.45f);
         return new Vector2(x, y);
     }
+    private IEnumerator DelayedSetWord(string word)
+{
+    yield return null; // espera un frame
+    ui.SetWord(word);
+}
+
 }
